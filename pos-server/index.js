@@ -16,10 +16,10 @@ app.get("/", (req, res) => {
 });
 
 const product = require("./routers/products");
-// const transactions = require("./routers/transactions");
+const transactions = require("./routers/transactions");
 
 app.use("/products", product);
-// app.use("/transactions", transactions);
+app.use("/transactions", transactions);
 
 
 app.listen(port, () => {

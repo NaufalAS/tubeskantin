@@ -28,6 +28,7 @@ products.route("/upload").post(async (req, res) => {
       const data = {
         nama: req.body.nama,
         harga: req.body.harga,
+        kategori: req.body.kategori,
         stock: req.body.stock,
         image: req.file.filename,
       };
@@ -100,6 +101,7 @@ products.route("/:id/edit").patch(async (req, res) => {
 		const data = {
 		  nama: req.body.nama,
 		  harga: req.body.harga,
+		  kategori: req.body.kategori,
 		  stock: req.body.stock,
 		  image: req.file ? req.file.filename : undefined,  // Periksa apakah req.file ada
 		};

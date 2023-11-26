@@ -46,12 +46,17 @@ products.route("/upload").post(async (req, res) => {
 
 // Endpoint untuk fetch produk (sudah ada)
 products.route("/").get(async (req, res) => {
-  try {
-    const result = await fetchProduct();
-    response.success(result, "Product fetched!", res);
-  } catch (err) {
-    response.error({ error: err.message }, req.originalUrl, 403, res);
-  }
+    try {
+        const result = await fetchProduct();
+        // Pastikan untuk mengirimkan path gambar yang benar
+        const productsWithImageUrl = result.map(product => ({
+            ...product,
+            image: `http://localhost:8000/uploads/${product.image}`
+        }));
+        response.success(productsWithImageUrl, "Product fetched!", res);
+    } catch (err) {
+        response.error({ error: err.message }, req.originalUrl, 403, res);
+    }
 });
 
 // Endpoint untuk menghapus produk berdasarkan ID

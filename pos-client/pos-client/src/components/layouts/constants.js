@@ -7,4 +7,8 @@ export const MENU_LIST = [
         name: 'Transaction',
         path: '/transaction'
     },
+    {
+        name: 'Barang',
+        path: '/barang'
+    }
 ]

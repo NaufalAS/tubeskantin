@@ -20,3 +20,8 @@
   margin-right: 600px; /* Sesuaikan nilai 10px sesuai kebutuhan jarak yang diinginkan */
 }
 
+.ok button {
+  margin-left: auto;
+  margin-right: 0; /* Reset margin-right for the button */
+}
+

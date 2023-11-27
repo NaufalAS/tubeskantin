@@ -53,6 +53,7 @@ import React from "react";
 import styles from './index.module.css'
 import { useCartDispatch } from "@/context/CartContext";
 
+
 const ProductList = ({products}) =>{
     const dispatch = useCartDispatch();
     const handleAddToCart = product =>{

@@ -33,6 +33,7 @@ export default function Home() {
       <ProductList products={products}/>
 
       <Cart />
+     
       </div>
       
     </Layout>

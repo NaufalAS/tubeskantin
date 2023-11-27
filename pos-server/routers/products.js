@@ -4,6 +4,8 @@ const products = express.Router();
 const multer = require('multer');
 const { fetchProduct, addProduct, deleteProduct, updateProduct, fetchProductById } = require("../controllers/products");
 
+
+
 // Konfigurasi multer untuk upload gambar
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -51,7 +53,7 @@ products.route("/").get(async (req, res) => {
         // Pastikan untuk mengirimkan path gambar yang benar
         const productsWithImageUrl = result.map(product => ({
             ...product,
-            image: `http://localhost:8000/uploads/${product.image}`
+            image: `http://localhost:3000/uploads/${product.image}`
         }));
         response.success(productsWithImageUrl, "Product fetched!", res);
     } catch (err) {

@@ -1,0 +1,36 @@
+/* Adjust the styles in your CSS module */
+.ok {
+    display: flex;
+    align-items: center; /* Align items vertically in the container */
+  }
+  
+  .ok h1,
+  .ok h3 {
+    display: inline;
+    margin: 0;
+  }
+  
+  .ok h1 {
+    margin-right: 10px; /* Adjust the spacing between the heading and the button */
+  }
+  
+  /* Apply shared button styles to both buttons */
+  .ok button {
+    background-color: var(--color-blue);
+    height: 30px;
+    width: 70px;
+    /*Setaspecificwidthforarectangularshape*/text-align: center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: var(--color-white);
+    transition: 300ms all;
+    margin-left: 1000px;
+    margin-right: auto;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+  

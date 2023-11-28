@@ -13,7 +13,8 @@ const BarangList = ({ barang }) => {
 
     // Navigasi ke halaman editbarang.js dengan menggunakan router.push
     router.push({
-      pathname: `/editbarang${id}}`,
+      pathname: `/editbarang/${id}`,
+
       // query: { product: JSON.stringify(editedProduct) },
     });
   };

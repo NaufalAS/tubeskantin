@@ -4,9 +4,6 @@ const products = express.Router();
 const multer = require('multer');
 const { fetchProduct, addProduct, deleteProduct, updateProduct, fetchProductById } = require("../controllers/products");
 
-
-
-// Konfigurasi multer untuk upload gambar
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
@@ -18,7 +15,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('image');
 
-// Endpoint untuk upload gambar dan data produk
 products.route("/upload").post(async (req, res) => {
   upload(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
@@ -26,16 +22,13 @@ products.route("/upload").post(async (req, res) => {
     } else if (err) {
       response.error({ error: 'Unknown error uploading image.' }, req.originalUrl, 500, res);
     } else {
-      // Data produk yang akan disimpan
       const data = {
         nama: req.body.nama,
         harga: req.body.harga,
-        kategori: req.body.kategori,
         stock: req.body.stock,
-        image: req.file.filename,
+        image: req.file ? req.file.filename : null,
       };
 
-      // Simpan data produk ke database
       try {
         const result = await addProduct(data);
         response.success(result, 'Product created!', res);

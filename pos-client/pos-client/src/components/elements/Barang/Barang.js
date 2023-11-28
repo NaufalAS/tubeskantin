@@ -1,10 +1,22 @@
+// BarangList.js
 import React from "react";
 import styles from './index.module.css';
-import { useCartDispatch } from "@/context/CartContext";
-import { FaEdit, FaTrash } from 'react-icons/fa'; 
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 const BarangList = ({ barang }) => {
-  const cartDispatch = useCartDispatch();
+  const router = useRouter();
+
+  const handleEdit = (id) => {
+    // Find the product by ID
+    const editedProduct = barang.find(product => product.id === id);
+
+    // Navigasi ke halaman editbarang.js dengan menggunakan router.push
+    router.push({
+      pathname: `/editbarang${id}}`,
+      // query: { product: JSON.stringify(editedProduct) },
+    });
+  };
 
   return (
     <div className={styles['transaction-list']}>
@@ -25,7 +37,11 @@ const BarangList = ({ barang }) => {
               <p>Stok: {barang.stock}</p>
             </div>
             <div className={styles['transaction-list__card__icons']}>
-              <FaEdit className={styles['edit-icon']} />
+              {/* Menggunakan onClick untuk menangani event klik */}
+              <FaEdit
+                className={styles['edit-icon']}
+                onClick={() => handleEdit(barang.id)}
+              />
               <FaTrash className={styles['delete-icon']} />
             </div>
           </div>

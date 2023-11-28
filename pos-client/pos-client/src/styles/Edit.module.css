@@ -1,0 +1,28 @@
+.home{
+    display: flex;
+    gap: 15px;
+    position: relative;
+  }
+  
+  .ok {
+    display: inline-block;
+    margin: 0;
+  }
+  
+  /* Definisikan gaya untuk elemen h1 dan h3 di dalam kelas .ok */
+  .ok h1, .ok h3 {
+    display: inline;
+    margin: 0;
+  }
+  
+  /* Tambahkan margin kanan pada elemen h1 untuk memberi jarak */
+  .ok h1 {
+    margin-right: 600px; /* Sesuaikan nilai 10px sesuai kebutuhan jarak yang diinginkan */
+  }
+  
+  .ok button {
+    margin-left: auto;
+    margin-right: 0; /* Reset margin-right for the button */
+  }
+  
+  

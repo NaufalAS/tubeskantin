@@ -25,6 +25,7 @@ products.route("/upload").post(async (req, res) => {
       const data = {
         nama: req.body.nama,
         harga: req.body.harga,
+        kategori: req.body.kategori,
         stock: req.body.stock,
         image: req.file ? req.file.filename : null,
       };
@@ -66,20 +67,28 @@ products.route("/:id").delete(async (req, res) => {
 	}
   });
 
-  products.route("/:id").get(async (req, res) => {
-	const productId = req.params.id;
-  
-	try {
-	  const result = await fetchProductById(productId);
-	  if (result) {
-		response.success(result, `Product with ID ${productId} fetched!`, res);
-	  } else {
-		response.error({ error: `Product with ID ${productId} not found.` }, req.originalUrl, 404, res);
-	  }
-	} catch (error) {
-	  response.error({ error: 'Error fetching product from database.' }, req.originalUrl, 500, res);
-	}
-  });
+// routers/products.js
+
+products.route("/:id").get(async (req, res) => {
+  const productId = req.params.id;
+
+  try {
+    const result = await fetchProductById(productId);
+    
+    if (result) {
+      // Pastikan untuk mengirimkan path gambar yang benar
+      result.image = result.image ? `http://localhost:3000/uploads/${result.image}` : null;
+
+      response.success(result, `Product with ID ${productId} fetched!`, res);
+    } else {
+      response.error({ error: `Product with ID ${productId} not found.` }, req.originalUrl, 404, res);
+    }
+  } catch (err) {
+    response.error({ error: err.message }, req.originalUrl, 500, res);
+  }
+});
+
+
 
 
   //

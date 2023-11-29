@@ -14,7 +14,8 @@
 //     harga: '',
 //     stock: '',
 //     image: null,
-//     category: '', // Add category to the state
+//     imageName: '',
+//     kategori: '',
 //   });
 
 //   useEffect(() => {
@@ -25,12 +26,14 @@
 
 //         if (response.status === 200) {
 //           setProduct(result);
+//           const imageName = result.image ? result.image.replace('http://localhost:3000/uploads/', '') : '';
 //           setEditedProduct({
 //             nama: result.nama,
 //             harga: result.harga,
 //             stock: result.stock,
 //             image: result.image || null,
-//             category: result.category || '', // Set category from result or empty string
+//             imageName: imageName,
+//             kategori: result.kategori,
 //           });
 //         } else {
 //           console.error('Error fetching product details:', result);
@@ -47,35 +50,23 @@
 //     }
 //   }, [id]);
 
-//   // const handleChange = (e) => {
-//   //   const { name, value, type, files } = e.target;
-
-//   //   if (type === 'file') {
-//   //     const selectedImage = files[0];
-//   //     setEditedProduct((prevProduct) => ({
-//   //       ...prevProduct,
-//   //       [name]: selectedImage,
-//   //     }));
-//   //   } else {
-//   //     setEditedProduct((prevProduct) => ({
-//   //       ...prevProduct,
-//   //       [name]: value,
-//   //     }));
-//   //   }
-//   // };
-
 //   const handleChange = (e) => {
-//     const { name, value, type, files } = e.target;
-  
+//     const { name, type, files } = e.target;
+
 //     if (type === 'file') {
 //       const selectedImage = files[0];
-//       setPreviewImage(URL.createObjectURL(selectedImage));
 //       setEditedProduct((prevProduct) => ({
 //         ...prevProduct,
 //         [name]: selectedImage,
-//         category: selectedImage ? selectedImage.name : prevProduct.category, // Update category with image name
+//         imageName: selectedImage ? selectedImage.name : '',
 //       }));
+//       // Menampilkan nama file di samping input
+//       const fileNameDisplay = document.getElementById('fileNameDisplay');
+//       if (fileNameDisplay) {
+//         fileNameDisplay.textContent = selectedImage ? selectedImage.name : '';
+//       }
 //     } else {
+//       const { value } = e.target;
 //       setEditedProduct((prevProduct) => ({
 //         ...prevProduct,
 //         [name]: value,
@@ -88,14 +79,18 @@
 //       const formData = new FormData();
 //       formData.append('nama', editedProduct.nama);
 //       formData.append('harga', editedProduct.harga);
+//       formData.append('kategori', editedProduct.kategori);
 //       formData.append('stock', editedProduct.stock);
-//       formData.append('image', editedProduct.image);
-//       formData.append('category', editedProduct.category); // Append category to FormData
 
-//       const response = await api.put(`/products/${id}`, formData);
+//       if (editedProduct.image) {
+//         formData.append('image', editedProduct.image);
+//       }
+
+//       const response = await api.put(`/products/${id}/edit`, formData);
 
 //       if (response.status === 200) {
 //         console.log('Product updated successfully:', response.data);
+//         router.push('/barang');
 //       } else {
 //         console.error('Error updating product:', response.data);
 //       }
@@ -115,7 +110,6 @@
 //   return (
 //     <div className={styles.inputContainer}>
 //       <h1>Edit Barang {id}</h1>
-//       <img src={editedProduct.image} alt="Current Product" style={{ maxWidth: '200px' }} />
 //       <form className={styles.inputForm}>
 //         <div className={styles.label}>
 //           <h3>Nama:</h3>
@@ -149,19 +143,22 @@
 //         </div>
 //         <div className={styles.label}>
 //           <h3>Gambar:</h3>
-//           <input
-//             type="file"
-//             name="image"
-//             onChange={handleChange}
-//             className={styles.input}
-//           />
+//           <div className={styles.input}>
+//             <input
+//               type="file"
+//               name="image"
+//               onChange={handleChange}
+//               className={styles.hiddenInput}
+//             />
+//             <span id="fileNameDisplay">{editedProduct.imageName}</span>
+//           </div>
 //         </div>
 //         <div className={styles.label}>
 //           <h3>Kategori:</h3>
 //           <input
 //             type="text"
-//             name="category"
-//             value={editedProduct.category}
+//             name="kategori"
+//             value={editedProduct.kategori}
 //             onChange={handleChange}
 //             className={styles.input}
 //           />
@@ -176,6 +173,9 @@
 
 // export default EditBarang;
 
+
+
+// pages/editbarang/[id].js
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import api from '@/api';
@@ -191,56 +191,60 @@ const EditBarang = () => {
     harga: '',
     stock: '',
     image: null,
-    imageName: '', // Add imageName state
-    category: '', 
+    imageName: '',
+    kategori: '',
   });
 
-  // ... (previous code)
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
 
-useEffect(() => {
-  const fetchProductById = async () => {
-    try {
-      const response = await api.get(`/products/${id}`);
-      const result = response.data.payload;
+  useEffect(() => {
+    const fetchProductById = async () => {
+      try {
+        const response = await api.get(`/products/${id}`);
+        const result = response.data.payload;
 
-      if (response.status === 200) {
-        setProduct(result);
-        const imageName = result.image ? result.image.replace('http://localhost:3000/uploads/', '') : '';
-        setEditedProduct({
-          nama: result.nama,
-          harga: result.harga,
-          stock: result.stock,
-          image: result.image || null,
-          imageName: imageName, // Update imageName without the prefix
-          category: result.kategori,
-        });
-      } else {
-        console.error('Error fetching product details:', result);
+        if (response.status === 200) {
+          setProduct(result);
+          const imageName = result.image ? result.image.replace('http://localhost:3000/uploads/', '') : '';
+          setEditedProduct({
+            nama: result.nama,
+            harga: result.harga,
+            stock: result.stock,
+            image: result.image || null,
+            imageName: imageName,
+            kategori: result.kategori,
+          });
+        } else {
+          console.error('Error fetching product details:', result);
+        }
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching product details:', error);
-    } finally {
-      setLoading(false);
+    };
+
+    if (id) {
+      fetchProductById();
     }
-  };
-
-  if (id) {
-    fetchProductById();
-  }
-}, [id]);
-
-// ... (rest of the code)
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, type, files } = e.target;
 
     if (type === 'file') {
       const selectedImage = files[0];
+      setSelectedImageFile(selectedImage); // Menyimpan nilai input file
       setEditedProduct((prevProduct) => ({
         ...prevProduct,
         [name]: selectedImage,
-        imageName: selectedImage ? selectedImage.name : '', // Update imageName
+        imageName: selectedImage ? selectedImage.name : '',
       }));
+      // Menampilkan nama file di samping input
+      const fileNameDisplay = document.getElementById('fileNameDisplay');
+      if (fileNameDisplay) {
+        fileNameDisplay.textContent = selectedImage ? selectedImage.name : '';
+      }
     } else {
       const { value } = e.target;
       setEditedProduct((prevProduct) => ({
@@ -249,25 +253,24 @@ useEffect(() => {
       }));
     }
   };
+
   const handleSave = async () => {
     try {
       const formData = new FormData();
       formData.append('nama', editedProduct.nama);
       formData.append('harga', editedProduct.harga);
-      formData.append('kategori', editedProduct.category); // Use 'kategori' instead of 'category' if that's what your server expects
+      formData.append('kategori', editedProduct.kategori);
       formData.append('stock', editedProduct.stock);
-      
-      // Check if a new image is selected
-      if (editedProduct.image) {
-        formData.append('image', editedProduct.image);
+
+      if (selectedImageFile) {
+        formData.append('image', selectedImageFile);
       }
-  
-      const response = await api.patch(`/products/${id}/edit`, formData);
-  
+
+      const response = await api.put(`/products/${id}/edit`, formData);
+
       if (response.status === 200) {
         console.log('Product updated successfully:', response.data);
-        // Navigate back to the 'barang.js' page
-        router.push('/barang'); // Adjust the path based on your actual route
+        router.push('/barang');
       } else {
         console.error('Error updating product:', response.data);
       }
@@ -275,8 +278,7 @@ useEffect(() => {
       console.error('Error updating product:', error);
     }
   };
-  
-  
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -321,26 +323,21 @@ useEffect(() => {
         </div>
         <div className={styles.label}>
           <h3>Gambar:</h3>
-          <label htmlFor="image" className={styles.input}>
-  Choose a file
-  {editedProduct.imageName && (
-    <p>Nama File: {editedProduct.imageName}</p>
-  )}
-  <input
-    type="file"
-    id="image"
-    name="image"
-    onChange={handleChange}
-    className={styles.input}
-  />
-</label>
-
+          <div className={styles.input}>
+            <input
+              type="file"
+              name="image"
+              onChange={handleChange}
+              className={styles.hiddenInput}
+            />
+            <span id="fileNameDisplay">{selectedImageFile ? selectedImageFile.name : editedProduct.imageName}</span>
+          </div>
         </div>
         <div className={styles.label}>
           <h3>Kategori:</h3>
           <input
             type="text"
-            name="category"
+            name="kategori"
             value={editedProduct.kategori}
             onChange={handleChange}
             className={styles.input}

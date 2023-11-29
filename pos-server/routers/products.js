@@ -97,7 +97,7 @@ products.route("/:id").get(async (req, res) => {
 // ...
 
 // Endpoint untuk edit gambar dan data produk
-products.route("/:id/edit").patch(async (req, res) => {
+products.route("/:id/edit").put(async (req, res) => {
 	const productId = req.params.id;
   
 	upload(req, res, async function (err) {

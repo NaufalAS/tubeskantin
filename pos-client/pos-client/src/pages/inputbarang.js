@@ -8,6 +8,7 @@ const InputBarang = () => {
     harga: '',
     stock: '',
     image: null,
+    kategori: '', // New category field
   });
 
   const handleChange = (e) => {
@@ -35,19 +36,22 @@ const InputBarang = () => {
     formData.append('harga', barang.harga);
     formData.append('stock', barang.stock);
     formData.append('image', barang.image);
+    formData.append('kategori', barang.kategori); // Include category in form data
 
     try {
       const response = await axios.post('http://localhost:3000/products/upload', formData);
       console.log('Server Response:', response.data);
 
-      setBarang({
+      setBarang({ 
         nama: '',
         harga: '',
         stock: '',
         image: null,
+        kategori: '', // Clear the category after submission
       });
-       // Redirect to the "/barang" page
-    window.location.href = '/barang';
+
+      // Redirect to the "/barang" page
+      window.location.href = '/barang';
     } catch (error) {
       console.error('Error submitting data:', error);
     }
@@ -95,6 +99,17 @@ const InputBarang = () => {
           <input
             type="file"
             name="image"
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </label>
+        <br />
+        <label className={styles.label}>
+          <h3>Kategori:</h3>
+          <input
+            type="text"
+            name="kategori"
+            value={barang.kategori}
             onChange={handleChange}
             className={styles.input}
           />

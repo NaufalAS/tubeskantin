@@ -13,9 +13,11 @@
   
   .popup {
     background: #fff;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
     text-align: center;
+    width: 400px; /* Mengatur lebar popup */
+    height: 200px; /* Mengatur tinggi popup */
   }
   
   .iconContainer {

@@ -1,7 +1,7 @@
 export const MENU_LIST = [
     {
         name: 'Home',
-        path: '/'
+        path: '/homeadmin'
     },
     {
         name: 'Transaction',

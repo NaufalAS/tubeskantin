@@ -1,41 +1,35 @@
-import React, {useEffect, useState} from "react";
-import Layout from "@/components/layouts/Layouts";
-import api from "@/api";
-import ProductList from "@/components/elements/ProductList/ProductList";
-import Cart from "@/components/elements/Cart/Cart";
-import styles from '@/styles/Home.module.css';
+// File: Navbar.js
+import React from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import styles from '@/styles/HomePage.module.css';
 
-export default function Home() {
+const Navbar = () => {
+  const router = useRouter();
 
-  const[products, setProducts] = useState([])
+  const handleButtonClick = (path) => {
+    router.push(path);
+  };
 
-  const fetchProduct = async () => {
-     const response = await api.get('/products');
-     const data = await response.data.payload;
-     setProducts(data)
-  }
- 
-
-
-
-  useEffect(() => {
-    fetchProduct();
-  }, [])
-
-
-  
   return (
-    <Layout>
-      <div className={styles.ok}>
-      <h1>Home</h1>
+    <div>
+      <nav className={styles.nav}>
+        <div className={styles.logoContainer}> {/* Adjust the class name */}
+          <Image src="/polines.png" alt="Logo" width={50} height={50} priority />
+        </div>
+        <div className={styles.spacer} />
+        <ul className={styles.ul}>
+          <li className={styles.li}>Home</li>
+          <li className={styles.li}>AboutUs</li>
+          <li className={styles.li}>Tujuan</li>
+        </ul>
+      </nav>
+      <div className={styles.buttonsContainer}> {/* Adjust the class name */}
+        <button className={styles.button} onClick={() => handleButtonClick('/login')}>Go to Login</button>
+        <button className={styles.button} onClick={() => handleButtonClick('/register')}>Go to Register</button>
       </div>
-      <div className={styles.home}>
-      <ProductList products={products}/>
+    </div>
+  );
+};
 
-      <Cart />
-     
-      </div>
-      
-    </Layout>
-  )
-}
+export default Navbar;

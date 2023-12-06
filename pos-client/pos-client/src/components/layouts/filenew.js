@@ -1,8 +1,14 @@
 export const ok = [
     {
-        path: '/barang'
+        name: 'HomePage',
+        path: '/'
     },
     {
-        path: '/editbrang'
+        name: 'Login',
+        path: '/login'
+    },
+    {
+        name: "Register",
+        path: "/register"
     }
 ]

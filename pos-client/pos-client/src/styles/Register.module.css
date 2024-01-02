@@ -1,0 +1,78 @@
+/* Register.module.css */
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .header {
+    text-align: center;
+    padding: 300px;
+    color: #E16426;
+  }
+  
+  .bold {
+    font-weight: bold;
+  }
+  
+  .cardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card {
+    width: 450px;
+    height: 450px;
+    background-color: #037CD3;
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+ 
+
+.cardLogin {
+    background-color: white;
+    color: #037CD3;
+    padding: 8px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    width: 20%;
+    border: 2px solid #037CD3;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+  
+  
+  
+  
+  .inputContainer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .inputContainer img {
+    margin-right: 10px;
+  }
+  
+  .inputField {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    box-sizing: border-box;
+  }
+  
+  /* Add more styling as needed */
+  
+  

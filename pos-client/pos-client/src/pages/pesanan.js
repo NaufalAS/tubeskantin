@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Layout from "@/components/layouts/Layouts";
 import api from '@/api';
-import TransactionList from '@/components/elements/TransactionList/TransactionList';
+import TransactionList from '@/components/elements/Pesanan/PesananList';
+import PesananList from '@/components/elements/Pesanan/PesananList';
 
 export default function Transaction() {
-  
   const [transactionList, setTransactionList] = useState([])
 
   const fetchTransactions = async () => {
@@ -17,10 +17,6 @@ export default function Transaction() {
     }
   }
 
-  const handleUpdateStatus = () => {
-    fetchTransactions();
-  }
-
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -28,7 +24,7 @@ export default function Transaction() {
   return (
     <Layout>
       <h1>Transaction History</h1>
-      <TransactionList transactionList={transactionList} />
+      <PesananList transactionList={transactionList} />
     </Layout>
   )
 }

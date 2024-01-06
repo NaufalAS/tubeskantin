@@ -1,39 +1,58 @@
 const db = require("../config/connection");
 
 exports.fetchTransaction = async () => {
-	const query = await db.query("SELECT * FROM transactions AS t INNER JOIN transaction_detail AS i ON t.no_order = i.no_order LEFT JOIN products AS p ON i.id_product = p.id")
+    const query = await db.query(`
+        SELECT 
+            t.*, 
+            i.no_order,
+            i.quantity,
+            p.nama AS product_name,
+            u.username AS user_name  
+        FROM 
+            transactions AS t
+            INNER JOIN transaction_detail AS i ON t.no_order = i.no_order 
+            LEFT JOIN products AS p ON i.id_product = p.id
+            LEFT JOIN users AS u ON t.pembeli = u.id
+    `);
 
-	if (!query.error) {
-		let listTransactions = [], listDetail = [], lastPush = "";
-		
-		for (let index in query) {
-			if (lastPush !== query[index].no_order) {
+    if (!query.error) {
+        let listTransactions = [], listDetail = [], lastPush = "";
+        
+        for (let index in query) {
+            if (lastPush !== query[index].no_order) {
                 for (let i in query) {
                     if (query[i].no_order === query[index].no_order) {
                         listDetail.push({
                             no_order: query[i].no_order,
-                            product: query[i].name,
+                            product: query[i].product_name,
                             quantity: query[i].quantity,
                         });
                     }
                 }
-				listTransactions.push({
+                listTransactions.push({
                     no_order: query[index].no_order,
-					total_price: query[index].total_price,
-					paid_amount: query[index].paid_amount,
-					kembalian: query[index].kembalian,
-					kembalian: query[index].status_makanan,
-					kembalian: query[index].status_pembayaran,
-					products: listDetail,
-				});
-                listDetail = []
-				lastPush = query[index].no_order;
-			}
-		}
-        return { transactions : listTransactions }
-	}
+                    total_price: query[index].total_price,
+                    paid_amount: query[index].paid_amount,
+                    kembalian: query[index].kembalian,
+                    status_makanan: query[index].status_makanan,
+                    status_pembayaran: query[index].status_pembayaran,
+                    user: query[index].user_name,
+                    products: listDetail,
+                });
+                listDetail = [];
+                lastPush = query[index].no_order;
+            }
+        }
+        return { transactions: listTransactions };
+    } else {
+        console.error("Error fetching transactions:", query.error);
+        throw new Error('Error fetching transactions.');
+    }
 };
 
+
+
+//
 exports.addTransaction = async (order, products) => {
 	const query = await db.query("INSERT INTO transactions SET ?", [order])
 	
@@ -74,7 +93,7 @@ async function addDetailTransaction(transaction_detail, product_id) {
 
 
 async function updateStock(transaction_detail, product_id) {
-	const query = await db.query("SELECT stock FROM products WHERE id IN (?)", [product_id])
+	const query = await db.query("SELECT stock FROM products WHERE no_order IN (?)", [product_id])
 
 	if (!query.error && query.length === product_id.length) {
 		const update_stock = [];
@@ -91,3 +110,33 @@ async function updateStock(transaction_detail, product_id) {
 		return update;
 	}
 };
+
+
+///
+exports.updateTransaction = async (orderNo, data) => {
+    try {
+      const query = await db.query("UPDATE transactions SET ? WHERE no_order = ?", [data, orderNo]);
+      if (query.affectedRows > 0) {
+        return { message: 'Product updated successfully.' };
+      } else {
+        throw new Error('No rows were affected by the update.');
+      }
+    } catch (error) {
+      console.error("Error updating product in database:", error);
+      throw new Error('Error updating product in database. ' + error.message);
+    }
+  };
+  
+  exports.updateTransaction1 = async (orderNo, data) => {
+    try {
+      const query = await db.query("UPDATE transactions SET ? WHERE no_order = ?", [data, orderNo]);
+      if (query.affectedRows > 0) {
+        return { message: 'Product updated successfully.' };
+      } else {
+        throw new Error('No rows were affected by the update.');
+      }
+    } catch (error) {
+      console.error("Error updating product in database:", error);
+      throw new Error('Error updating product in database. ' + error.message);
+    }
+  };

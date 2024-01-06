@@ -4,6 +4,10 @@ export const MENU_LIST = [
         path: '/homeadmin'
     },
     {
+        name: 'Pesanan',
+        path: '/pesanan'
+    },
+    {
         name: 'Transaction',
         path: '/transaction'
     },

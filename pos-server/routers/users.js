@@ -1,11 +1,10 @@
-const express = require("express");
-const response = require("../helpers/response");
+const express = require('express');
+const response = require('../helpers/response');
 const users = express.Router();
-const { registerUser, loginUser } = require("../controllers/users");
-
+const { registerUser, loginUser } = require('../controllers/users');
 
 // Endpoint untuk registrasi pengguna
-users.route("/register").post(async (req, res) => {
+users.route('/register').post(async (req, res) => {
   try {
     const userData = {
       username: req.body.username,
@@ -15,6 +14,8 @@ users.route("/register").post(async (req, res) => {
       confirm_password: req.body.confirm_password,
     };
 
+    console.log("Received Role:", userData.role); // Add this line
+
     const result = await registerUser(userData);
     response.success(result, 'User registered successfully!', res);
   } catch (error) {
@@ -22,12 +23,8 @@ users.route("/register").post(async (req, res) => {
   }
 });
 
-
-
-// Endpoint lain untuk operasi pengguna lainnya dapat ditambahkan di sini
-
 // Endpoint untuk login pengguna
-users.route("/login").post(async (req, res) => {
+users.route('/login').post(async (req, res) => {
   try {
     const { username, password } = req.body;
     const result = await loginUser(username, password);

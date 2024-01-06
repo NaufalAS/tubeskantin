@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styles from './index.module.css';
 import { MENU_LIST } from './constants';
 
-const Layout = ({ children }) => {
+const Layouts = ({ children }) => {
     const router = useRouter();
 
     const handleCangePage = (path) =>{
@@ -35,4 +35,4 @@ const Layout = ({ children }) => {
 }
 
 
-export default Layout;
+export default Layouts;

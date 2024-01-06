@@ -1,14 +1,18 @@
-export const ok = [
+import { FaHome, FaShoppingCart, FaHistory } from 'react-icons/fa'; // Import icons from a popular icon library
+export const MENU_USER = [
     {
-        name: 'HomePage',
-        path: '/'
+        name: 'Home',
+        path: '/homeuser',
+        icon: <FaHome />
     },
     {
-        name: 'Login',
-        path: '/login'
+        name: 'Pesanan',
+        path: '/PesananUser',
+        icon: <FaShoppingCart />
     },
     {
-        name: "Register",
-        path: "/register"
+        name: 'Riwayat',
+        path: '/riwayatuser',
+        icon: <FaHistory />
     }
 ]

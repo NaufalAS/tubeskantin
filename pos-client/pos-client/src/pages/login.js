@@ -1,18 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styles from '@/styles/Login.module.css';
 
-const Navbar = () => {
+const Login = () => {
   const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleButtonClick = (path) => {
-    router.push(path);
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+  
+      const result = await response.json();
+      console.log('Login response:', result);
+  
+      const role = result?.payload?.role; // Update to extract role correctly
+  
+      if (role === 'admin') {
+        router.push('/homeadmin');
+      } else if (role === 'mahasiswa') { // Adjust role to match your expected role
+        router.push('/homeuser');
+      } else {
+        // Handle unexpected role
+        console.error('Unexpected role:', role);
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      // Handle error, show an alert, etc.
+    }
   };
+  
 
   return (
     <div className={styles.container}>
-          <Image src="/ya.jpeg" alt="Email Icon" width={200} height={200} />
+      <Image src="/ya.jpeg" alt="Email Icon" width={200} height={200} />
       <div className={styles.header}>
         <p className={styles.bold}>WELCOME BACK</p>
         <p>Log in to your existing Account</p>
@@ -20,19 +55,31 @@ const Navbar = () => {
 
       <div className={styles.cardContainer}>
         <div className={styles.card}>
-          <p>Email:</p>
+          <p>Username:</p>
           <div className={styles.inputContainer}>
             <Image src="/icon.png" alt="Email Icon" width={20} height={20} />
-            <input type="text" placeholder="Enter your email" className={styles.inputField} />
+            <input
+              type="text"
+              placeholder="Enter your username"
+              className={styles.inputField}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
 
           <p>Password:</p>
           <div className={styles.inputContainer}>
             <Image src="/kunci.png" alt="Password Icon" width={20} height={20} />
-            <input type="password" placeholder="Enter your password" className={styles.inputField} />
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className={styles.inputField}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
         </div>
-        <button className={styles.cardLogin} onClick={() => handleButtonClick('/login')}>
+        <button className={styles.cardLogin} onClick={handleLogin}>
           <span className={styles.loginText}>Login</span>
         </button>
         <p>Don’t have an account? </p>
@@ -41,4 +88,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Login;

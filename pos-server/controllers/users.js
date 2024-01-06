@@ -35,26 +35,29 @@ exports.registerUser = async (data) => {
 
 exports.loginUser = async (username, password) => {
   try {
-    // Cari pengguna berdasarkan nama pengguna
+    // Replace this with your actual database query
     const user = await db.query('SELECT * FROM users WHERE username = ?', [username]);
 
     if (user.length === 0) {
-      throw new Error('User not found.');
+      throw new Error('User not found. Check username.');
     }
 
-    // Bandingkan kata sandi yang di-hash dengan kata sandi yang dimasukkan
+    // Compare hashed password
     const passwordMatch = await bcrypt.compare(password, user[0].password);
 
     if (!passwordMatch) {
       throw new Error('Incorrect password.');
     }
 
-    // Jika kata sandi cocok, Anda dapat mengizinkan pengguna untuk masuk
-    return { id: user[0].id, username: user[0].username, email: user[0].email, role: user[0].role };
+    return {
+      id: user[0].id,
+      username: user[0].username,
+      email: user[0].email,
+      role: user[0].role,
+    };
   } catch (error) {
     console.error('Error logging in:', error);
     throw new Error('Error logging in. ' + error.message);
   }
 };
-
   

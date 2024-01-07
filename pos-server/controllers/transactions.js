@@ -54,31 +54,29 @@ exports.fetchTransaction = async () => {
 
 //
 exports.addTransaction = async (order, products) => {
-	const query = await db.query("INSERT INTO transactions SET ?", [order])
-	
-	if (!query.error) {
-		const transaction_detail = [];
-		const product_id = [];
-		
-		products.map((product) => {
-			transaction_detail.push([order.no_order, product.id, product.quantity]);
-			product_id.push([product.id]);
-		});
+  const query = await db.query("INSERT INTO transactions SET ?", [order]);
+  
+  if (!query.error) {
+      const transaction_detail = [];
+      const product_id = [];
+      
+      products.forEach((product) => {
+          transaction_detail.push([order.no_order, product.id, product.quantity]);
+          product_id.push([product.id]);
+      });
 
-		const updateDetailStock = await addDetailTransaction(
-			transaction_detail,
-			product_id
-		);
+      const updateDetailStock = await addDetailTransaction(transaction_detail, product_id);
 
-		if (!updateDetailStock.error) {
-			return db.query(
-				"SELECT * FROM transactions WHERE no_order = ?",
-				order.no_order
-			);
-		}
-		return updateDetailStock;
-	}
-};
+      if (!updateDetailStock.error) {
+          return db.query("SELECT * FROM transactions WHERE no_order = ?", [order.no_order]);
+      }
+      return updateDetailStock;
+  } else {
+      console.error("Error creating transaction:", query.error);
+      throw new Error('Error creating transaction.');
+  }
+}
+
 
 
 // 👇 internal function 👇
@@ -93,23 +91,27 @@ async function addDetailTransaction(transaction_detail, product_id) {
 
 
 async function updateStock(transaction_detail, product_id) {
-	const query = await db.query("SELECT stock FROM products WHERE no_order IN (?)", [product_id])
+  const query = await db.query("SELECT stock FROM products WHERE id IN (?)", [product_id]);
 
-	if (!query.error && query.length === product_id.length) {
-		const update_stock = [];
-		
-		query.map((res, i) => {
-			update_stock.push([
-				transaction_detail[i][1],
-				res.stock - transaction_detail[i][2],
-			]);
-		});
+  if (!query.error && query.length === product_id.length) {
+      const update_stock = [];
 
-		const update = await db.query("INSERT INTO products (id,stock) VALUES ? ON DUPLICATE KEY UPDATE stock = VALUES(stock)", [update_stock])
+      query.forEach((res, i) => {
+          update_stock.push([
+              product_id[i][0],  // Menggunakan product_id sebagai ID produk
+              res.stock - transaction_detail[i][2],
+          ]);
+      });
 
-		return update;
-	}
-};
+      const update = await db.query("INSERT INTO products (id, stock) VALUES ? ON DUPLICATE KEY UPDATE stock = VALUES(stock)", [update_stock]);
+
+      return update;
+  } else {
+      console.error("Error fetching product stock:", query.error);
+      throw new Error('Error fetching product stock.');
+  }
+}
+
 
 
 ///

@@ -3,7 +3,7 @@ const transactions = express.Router();
 const response = require("../helpers/response");
 
 const { randomOrderNumber } = require("../helpers/utils")
-const { fetchTransaction, addTransaction, updateTransaction, updateTransaction1 } = require('../controllers/transactions')
+const { fetchTransaction, addTransaction, updateTransaction, updateTransaction1, fetchTransactionsByBuyer } = require('../controllers/transactions')
 
 transactions.route('/').post(async (req, res) => {
     const { total_price, paid_amount, products, kembalian,status_makanan, status_pembayaran, pembeli, metode_pembayaran } = req.body
@@ -51,7 +51,9 @@ transactions.route("/:no_order/edit").put(async (req, res) => {
   transactions.route("/:no_order/edit1").put(async (req, res) => {
 	const orderNo = req.params.no_order;
 	const data = {
-	  status_pembayaran: req.body.status_pembayaran,
+	  status_pembayaran: req.body.status_pembayaran, 
+	  paid_amount: req.body.paid_amount, 
+	  kembalian: req.body.kembalian, 
 	};
   
 	try {
@@ -60,6 +62,16 @@ transactions.route("/:no_order/edit").put(async (req, res) => {
 	} catch (error) {
 	  console.error('Error updating transaction status:', error);
 	  res.status(500).json({ success: false, error: 'Error updating transaction status.' });
+	}
+  });
+
+  transactions.route('/byBuyer/:buyerId').get(async (req, res) => {
+	try {
+	  const { buyerId } = req.params;
+	  const result = await fetchTransactionsByBuyer(buyerId);
+	  response.success(result, 'Successfully fetched transactions by buyer!', res);
+	} catch (error) {
+	  response.error({ error: 'Error fetching transactions by buyer.' }, req.originalUrl, 500, res);
 	}
   });
 

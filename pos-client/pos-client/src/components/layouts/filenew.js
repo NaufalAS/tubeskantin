@@ -7,7 +7,7 @@ export const MENU_USER = [
     },
     {
         name: 'Pesanan',
-        path: '/PesananUser',
+        path: '/pesananuser',
         icon: <FaShoppingCart />
     },
     {

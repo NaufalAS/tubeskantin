@@ -3,6 +3,7 @@ import Layout from "@/components/layouts/Layouts";
 import api from '@/api';
 import TransactionList from '@/components/elements/Pesanan/PesananList';
 import PesananList from '@/components/elements/Pesanan/PesananList';
+import Layouts from '@/components/layouts/Layouts';
 
 export default function Transaction() {
   const [transactionList, setTransactionList] = useState([])
@@ -22,9 +23,9 @@ export default function Transaction() {
   }, []);
 
   return (
-    <Layout>
+    <Layouts>
       <h1>Transaction History</h1>
       <PesananList transactionList={transactionList} />
-    </Layout>
+    </Layouts>
   )
 }

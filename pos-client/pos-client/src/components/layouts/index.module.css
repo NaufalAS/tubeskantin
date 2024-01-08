@@ -68,6 +68,27 @@
     color: #2f80ec;
 }
 
+
+/* Add or update this style in your CSS */
+/* Add or update this style in your CSS */
+.logout {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: rgb(255, 165, 0); /* Orange color */
+    border-radius: 24px;
+    margin-top: 20px;
+    cursor: pointer; /* Add cursor style for better UX */
+  }
+  
+  .logout:hover {
+    background-color: white;
+    color: #2f80ec;
+  }
+  
+  
 .content {
     width: calc(100vw - 130px);
     max-height: 100vh;

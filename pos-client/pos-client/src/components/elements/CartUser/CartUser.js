@@ -2,12 +2,24 @@ import React, { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { useCart, useCartDispatch } from "@/context/CartContext";
 import api from "@/api";
+import Cookies from 'js-cookie';
 
 const CartUser = () => {
-  const [payAmount, setPayAmount] = useState("");
+  const [buyerName, setBuyerName] = useState("");
+  const [displayedBuyerName, setDisplayedBuyerName] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("online");
   const carts = useCart();
   const dispatch = useCartDispatch();
   const [changeAmount, setChangeAmount] = useState(0);
+
+  // Retrieve user information from cookies
+  const userInfo = Cookies.getJSON('userInfo');
+  const { id } = userInfo || {};
+
+  useEffect(() => {
+    // Set the initial value of displayedBuyerName to user ID
+    setDisplayedBuyerName(id || '');
+  }, [id]);
 
   const handleAddToCart = (product) => {
     dispatch({
@@ -19,14 +31,9 @@ const CartUser = () => {
   const getTotalPrice = () => {
     let totalPrice = 0;
     for (let i = 0; i < (carts ?? []).length; i++) {
-      totalPrice += (carts[i]?.harga ?? 0) * (carts[i]?.quantity ?? 0); // Ganti 'price' menjadi 'harga'
+      totalPrice += (carts[i]?.harga ?? 0) * (carts[i]?.quantity ?? 0);
     }
     return totalPrice;
-  };
-
-  const handleChangePay = (event) => {
-    const { value } = event.target;
-    setPayAmount(value);
   };
 
   const handleDecreaseCart = (product) => {
@@ -34,6 +41,11 @@ const CartUser = () => {
       type: "decrease",
       payload: product,
     });
+  };
+
+  const handlePaymentMethodChange = (event) => {
+    const { value } = event.target;
+    setPaymentMethod(value);
   };
 
   const handleCheckout = async () => {
@@ -45,14 +57,28 @@ const CartUser = () => {
     });
 
     try {
+      const totalPrice = +getTotalPrice();
+
+      // Otomatis isi bayar sesuai dengan total harga
+      const paidAmount = 0;
+      const change = 0;
+
       const payload = {
-        total_price: +getTotalPrice(),
-        paid_amount: +payAmount,
-        kembalian: +changeAmount,
+        total_price: totalPrice,
+        paid_amount: paidAmount,
+        kembalian: change,
         products,
+        pembeli: buyerName || id,
+        status_pembayaran: "Belum Bayar",
+        status_makanan: "Belum Siap",
+        metode_pembayaran: paymentMethod,
       };
       await api.post("/transactions", payload);
-      setPayAmount("");
+
+      // Reset state
+      setBuyerName("");
+      setDisplayedBuyerName("");
+      setPaymentMethod("online");
       dispatch({ type: "clear" });
     } catch (error) {
       console.error(error);
@@ -60,20 +86,15 @@ const CartUser = () => {
   };
 
   const isDisableButton = () => {
-    return !payAmount || +payAmount < +getTotalPrice() || carts.length === 0;
+    return (
+      getTotalPrice() === 0 ||
+      carts.length === 0
+    );
   };
-
-  useEffect(() => {
-    const totalPrice = getTotalPrice();
-    const paidAmount = +payAmount || 0;
-    const change = paidAmount - totalPrice;
-    setChangeAmount(change > 0 ? change : 0);
-  }, [carts, payAmount]);
 
   return (
     <div className={styles.cart}>
       <h3>Cart</h3>
-  
       <div className={styles["cart__cart-list"]}>
         {carts && carts.length > 0 ? (
           carts.map((cart, index) => (
@@ -102,26 +123,23 @@ const CartUser = () => {
           <p>Keranjang Anda kosong.</p>
         )}
       </div>
-  
       <div className={styles["cart__checkout"]}>
         <div className={styles["cart__total-price"]}>
           <p>Total Harga:</p>
           <p>{getTotalPrice()}</p>
         </div>
-        <div className={styles["cart__pay"]}>
-          <label>Bayar</label>
-          <input
-  placeholder="-"
-  onChange={handleChangePay}
-  type="number"
-  value={payAmount}
-  disabled={carts.length === 0}
-/>
+        {/* Hapus input bayar */}
+        <div className={styles["cart__payment-method"]}>
+          <label>Metode Pembayaran:</label>
+          <select value={paymentMethod} onChange={handlePaymentMethodChange}>
+            <option value="online">Online</option>
+            <option value="bayar_tempat">Bayar Ditempat</option>
+          </select>
         </div>
-        <div className={styles["cart__change"]}>
+        {/* <div className={styles["cart__change"]}>
           <p>Kembalian:</p>
           <p>{changeAmount}</p>
-        </div>
+        </div> */}
         <button onClick={handleCheckout} disabled={isDisableButton()}>
           Checkout
         </button>

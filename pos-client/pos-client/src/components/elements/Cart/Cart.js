@@ -58,7 +58,7 @@ const Cart = () => {
         kembalian: +changeAmount,
         products,
         pembeli: buyerName, // Mengganti buyer_name menjadi pembeli
-        status_pembayaran: "Belum Bayar",
+        status_pembayaran: "Sudah Dibayar",
         status_makanan: "Belum Siap",
         metode_pembayaran: paymentMethod, // Mengganti payment_method menjadi metode_pembayaran
       };

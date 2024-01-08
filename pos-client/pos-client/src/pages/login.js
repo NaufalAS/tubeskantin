@@ -1,7 +1,10 @@
+// Login.js
+
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styles from '@/styles/Login.module.css';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie'; // Import the js-cookie library
 
 const Login = () => {
   const router = useRouter();
@@ -28,16 +31,21 @@ const Login = () => {
       const result = await response.json();
       console.log('Login response:', result);
   
-      const role = result?.payload?.role; // Update to extract role correctly
+      const { role, id } = result?.payload || {};
   
       if (role === 'admin') {
         router.push('/homeadmin');
-      } else if (role === 'mahasiswa') { // Adjust role to match your expected role
+      } else if (role === 'mahasiswa') {
+        // Adjust role to match your expected role
         router.push('/homeuser');
+        Cookies.set('userInfo', { username, id, role });
       } else {
         // Handle unexpected role
         console.error('Unexpected role:', role);
       }
+  
+      // Clear session storage upon successful login
+      sessionStorage.removeItem('isLoggedOut');
     } catch (error) {
       console.error('Error logging in:', error);
       // Handle error, show an alert, etc.

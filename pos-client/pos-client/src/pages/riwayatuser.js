@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import Layout from "@/components/layouts/Layouts";
+import Layout from "@/components/layouts/Layout";
 import api from '@/api';
-import TransactionList from '@/components/elements/TransactionList/TransactionList';
-import Layouts from '@/components/layouts/Layouts';
+import TransactionUser from '@/components/elements/TransactionUser/TransactionUser';
+import Cookies from 'js-cookie';
 
 export default function Transaction() {
+
+  const userInfo = Cookies.getJSON('userInfo');
+  const { id } = userInfo || {};
   
   const [transactionList, setTransactionList] = useState([])
 
   const fetchTransactions = async () => {
     try {
-      const response = await api.get('/transactions');
+      const response = await api.get(`/transactions/byBuyer/${id}`);
       const data = response.data.payload.transactions
       setTransactionList(data)
     } catch (err) {
@@ -27,9 +30,9 @@ export default function Transaction() {
   }, []);
 
   return (
-    <Layouts>
-      <h1>Transaction History</h1>
-      <TransactionList transactionList={transactionList} />
-    </Layouts>
+    <Layout>
+      <h1>Transaction History user</h1>
+      <TransactionUser transactionList={transactionList} />
+    </Layout>
   )
 }

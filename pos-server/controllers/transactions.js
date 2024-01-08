@@ -142,3 +142,131 @@ exports.updateTransaction = async (orderNo, data) => {
       throw new Error('Error updating product in database. ' + error.message);
     }
   };
+
+//
+// Tambahkan fungsi berikut pada file Anda yang sesuai
+exports.fetchTransactionsByBuyer = async (buyerId) => {
+  let query = `
+      SELECT 
+          t.*, 
+          i.no_order,
+          i.quantity,
+          p.nama AS product_name,
+          u.username AS user_name  
+      FROM 
+          transactions AS t
+          INNER JOIN transaction_detail AS i ON t.no_order = i.no_order 
+          LEFT JOIN products AS p ON i.id_product = p.id
+          LEFT JOIN users AS u ON t.pembeli = u.id
+  `;
+
+  // If buyerId is provided, add a WHERE clause to filter by buyerId
+  if (buyerId) {
+      query += ` WHERE t.pembeli = ${buyerId}`;
+  }
+
+  const result = await db.query(query);
+
+  if (!result.error) {
+      let listTransactions = [], listDetail = [], lastPush = "";
+      
+      for (let index in result) {
+          if (lastPush !== result[index].no_order) {
+              for (let i in result) {
+                  if (result[i].no_order === result[index].no_order) {
+                      listDetail.push({
+                          no_order: result[i].no_order,
+                          product: result[i].product_name,
+                          quantity: result[i].quantity,
+                      });
+                  }
+              }
+              listTransactions.push({
+                  no_order: result[index].no_order,
+                  total_price: result[index].total_price,
+                  paid_amount: result[index].paid_amount,
+                  kembalian: result[index].kembalian,
+                  status_makanan: result[index].status_makanan,
+                  status_pembayaran: result[index].status_pembayaran,
+                  user: result[index].user_name,
+                  products: listDetail,
+              });
+              listDetail = [];
+              lastPush = result[index].no_order;
+          }
+      }
+      return { transactions: listTransactions };
+  } else {
+      console.error("Error fetching transactions:", result.error);
+      throw new Error('Error fetching transactions.');
+  }
+};
+
+// Fungsi fetchTransaction yang sudah ada
+// Tambahkan fungsi berikut pada file Anda yang sesuai
+exports.fetchTransactionsByBuyer = async (buyerId) => {
+  let query = `
+    SELECT 
+        t.*, 
+        i.no_order,
+        i.quantity,
+        p.nama AS product_name,
+        u.username AS user_name  
+    FROM 
+        transactions AS t
+        INNER JOIN transaction_detail AS i ON t.no_order = i.no_order 
+        LEFT JOIN products AS p ON i.id_product = p.id
+        LEFT JOIN users AS u ON t.pembeli = u.id
+  `;
+
+  // If buyerId is provided, add a WHERE clause to filter by buyerId
+  if (buyerId) {
+    query += ` WHERE t.pembeli = ${buyerId}`;
+  }
+
+  const result = await db.query(query);
+
+  if (!result.error) {
+    const transactionsMap = new Map();
+
+    result.forEach((transaction) => {
+      const {
+        no_order,
+        total_price,
+        paid_amount,
+        kembalian,
+        status_makanan,
+        status_pembayaran,
+        user_name,
+        product_name,
+        quantity,
+      } = transaction;
+
+      if (!transactionsMap.has(no_order)) {
+        transactionsMap.set(no_order, {
+          no_order,
+          total_price,
+          paid_amount,
+          kembalian,
+          status_makanan,
+          status_pembayaran,
+          user: user_name,
+          products: [],
+        });
+      }
+
+      transactionsMap.get(no_order).products.push({
+        no_order,
+        product: product_name,
+        quantity,
+      });
+    });
+
+    const listTransactions = [...transactionsMap.values()];
+
+    return { transactions: listTransactions };
+  } else {
+    console.error("Error fetching transactions:", result.error);
+    throw new Error('Error fetching transactions.');
+  }
+};

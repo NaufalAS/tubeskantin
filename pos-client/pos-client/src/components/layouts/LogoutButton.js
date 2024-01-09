@@ -1,7 +1,7 @@
 // components/LogoutButton.js
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import styles from './index.module.css'; // Import the styles
+import styles from './logout.module.css'; // Import the styles
 
 const LogoutButton = () => {
   const router = useRouter();

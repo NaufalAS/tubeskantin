@@ -1,0 +1,23 @@
+.logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #E16426;
+    border-radius: 4000px;
+    width: 100px; /* Set a specific width */
+    height: 36px; /* Set a specific height */
+    margin-top: 10px;
+    cursor: pointer;
+    /* border: 2px solid black; Add a border for visual representation */
+
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+    -ms-border-radius: 24px;
+    -o-border-radius: 24px;
+}
+  
+.logout:hover {
+    background-color: white;
+    color: #2f80ec;
+}

@@ -24,7 +24,7 @@ export default function Transaction() {
 
   return (
     <Layouts>
-      <h1>Transaction History</h1>
+      <h1>Pemesanan</h1>
       <PesananList transactionList={transactionList} />
     </Layouts>
   )

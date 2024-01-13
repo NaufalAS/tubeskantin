@@ -33,8 +33,8 @@
   padding: 8px;
   border: 1px solid #3498db; /* Blue border color */
   border-radius: 4px;
-  flex: 1; /* Adjust the width as needed */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  flex: 1;
+  box-sizing: border-box; 
 }
 
 

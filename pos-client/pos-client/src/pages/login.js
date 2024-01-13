@@ -41,7 +41,8 @@ const Login = () => {
         Cookies.set('userInfo', { username, id, role });
       } else {
         // Handle unexpected role
-        console.error('Unexpected role:', role);
+        router.push('/homeuser');
+        Cookies.set('userInfo', { username, id, role });
       }
   
       // Clear session storage upon successful login

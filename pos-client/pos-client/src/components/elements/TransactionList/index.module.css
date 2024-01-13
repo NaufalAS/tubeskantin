@@ -12,7 +12,7 @@
   
   .transaction-list__card {
     background-color: var(--color-white);
-    width: 70%;
+    width: 85%;
     min-height: 250px;
     max-height: 250px;
     border-radius: 24px;

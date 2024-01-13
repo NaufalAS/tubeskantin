@@ -28,7 +28,7 @@ export default function Transaction() {
 
   return (
     <Layouts>
-      <h1>Transaction History</h1>
+      <h1> History</h1>
       <TransactionList transactionList={transactionList} />
     </Layouts>
   )

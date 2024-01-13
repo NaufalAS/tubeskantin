@@ -22,7 +22,7 @@ const transactions = require("./routers/transactions");
 const users = require("./routers/users");
 
 
-
+app.use('/uploads', express.static('uploads'));
 app.use("/products", product);
 app.use("/transactions", transactions);
 app.use("/users", users);

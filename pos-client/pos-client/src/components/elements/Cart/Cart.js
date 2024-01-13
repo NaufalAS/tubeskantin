@@ -9,7 +9,6 @@ const Cart = () => {
   const [paymentMethod, setPaymentMethod] = useState("online");
   const carts = useCart();
   const dispatch = useCartDispatch();
-  const [changeAmount, setChangeAmount] = useState(0);
 
   const handleAddToCart = (product) => {
     dispatch({
@@ -52,18 +51,26 @@ const Cart = () => {
     });
   
     try {
+      const totalPrice = +getTotalPrice();
+  
+      // Otomatis isi bayar sesuai dengan total harga
+      const paidAmount = 0; // Mengeset nilai paidAmount menjadi 0
+      const change = 0;
+  
       const payload = {
-        total_price: +getTotalPrice(),
-        paid_amount: +payAmount,
-        kembalian: +changeAmount,
+        total_price: totalPrice,
+        paid_amount: paidAmount,
+        kembalian: change,
         products,
-        pembeli: buyerName, // Mengganti buyer_name menjadi pembeli
-        status_pembayaran: "Sudah Dibayar",
+        pembeli: buyerName || '0',
+        status_pembayaran: "Belum Bayar",
         status_makanan: "Belum Siap",
-        metode_pembayaran: paymentMethod, // Mengganti payment_method menjadi metode_pembayaran
+        metode_pembayaran: paymentMethod,
       };
       await api.post("/transactions", payload);
-      setPayAmount("");
+  
+      // Reset state
+      setPayAmount("0"); // Mengeset nilai payAmount menjadi "0"
       setBuyerName("0");
       setPaymentMethod("online");
       dispatch({ type: "clear" });
@@ -71,26 +78,21 @@ const Cart = () => {
       console.error(error);
     }
   };
-  
+
   const handleBuyerNameChange = (event) => {
     const { value } = event.target;
     setBuyerName(value);
   };
-  
 
   const isDisableButton = () => {
     return (
-      !payAmount ||
-      +payAmount < +getTotalPrice() ||
+      getTotalPrice() === 0 ||
       carts.length === 0
     );
   };
 
   useEffect(() => {
-    const totalPrice = getTotalPrice();
-    const paidAmount = +payAmount || 0;
-    const change = paidAmount - totalPrice;
-    setChangeAmount(change > 0 ? change : 0);
+    // Sesuaikan efek samping sesuai kebutuhan
   }, [carts, payAmount]);
 
   return (
@@ -131,16 +133,7 @@ const Cart = () => {
           <p>Total Harga:</p>
           <p>{getTotalPrice()}</p>
         </div>
-        <div className={styles["cart__pay"]}>
-          <label>Bayar</label>
-          <input
-            placeholder="-"
-            onChange={handleChangePay}
-            type="number"
-            value={payAmount}
-            disabled={carts.length === 0}
-          />
-        </div>
+       
         <div className={styles["cart__payment-method"]}>
           <label>Metode Pembayaran:</label>
           <select value={paymentMethod} onChange={handlePaymentMethodChange}>
@@ -148,10 +141,7 @@ const Cart = () => {
             <option value="bayar_tempat">Bayar Ditempat</option>
           </select>
         </div>
-        <div className={styles["cart__change"]}>
-          <p>Kembalian:</p>
-          <p>{changeAmount}</p>
-        </div>
+     
         <button onClick={handleCheckout} disabled={isDisableButton()}>
           Checkout
         </button>

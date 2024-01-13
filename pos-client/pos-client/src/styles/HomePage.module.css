@@ -1,9 +1,17 @@
 /* File: HomePage.module.css */
+
+.body {
+  background-color: #303092;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+}
+
 .nav {
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: #eee; /* Add your preferred background color */
+  background-color: #303092; /* Override the global style */
 }
 
 .logoContainer {
@@ -24,14 +32,276 @@
 .li {
   margin-right: 80px;
   cursor: pointer;
+  color: white;
+}
+.kanan{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* This will create space between content and image */
+  width: 80%;
+  margin-top: 100px; /* Adjust the margin-top as needed */
+  margin-left: auto; /* Adjust the left margin to center the content and image */
+  margin-right: auto; /* Adjust the right margin to center the content and image */
+}
+
+.contentContainer {
+  color: white; /* Set text color to white */
+  margin-left: 40px; /* Adjust the right margin */
 }
 
 .buttonsContainer {
   display: flex;
   align-items: center;
-  margin-top: 90px; /* Add margin at the top */
+  margin-top: 10px; /* Adjust the margin as needed */
+  margin-left: 170px;
 }
 
 .button {
+  height: 50px;
+  width: 140px;
+  background-color: chocolate;
+  color: white;
   margin-left: 10px;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border: none; /* Remove default border */
+  outline: none; /* Remove focus outline */
+  margin-top: 20px;
+}
+
+/*  */
+.body1 {
+  background-color: #FEFEFF;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+}
+
+.awal {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.wrapper1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
+  margin-top: 20px;
+  margin-left: 90px; /* Adjusted left margin */
+  margin-right: 30px; /* Adjusted right margin */
+}
+
+.contentContainer1 {
+  margin-left: 170px; /* Adjusted left margin */
+  margin-right: 30px; /* Adjusted right margin */
+  width: 100%;
+  max-width: 6000px;
+  background-color: #0063E7;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+}
+
+.contentContainer1 > p {
+  font-size: 20px;
+}
+
+.contentContainer1 > h1 {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.pembungkuscard {
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch; /* Ensure cards have the same height */
+  width: 80%;
+  margin: 40px auto;
+}
+
+.card1,
+.card2,
+.card3 {
+  flex: 0.9; /* Adjust the width as needed */
+  height: 250px; /* Adjust the height as needed */
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+}
+
+.card1 {
+  background-color: #E16426;
+  margin-right: 10px; /* Add margin to the right of the first card */
+}
+
+.card2 {
+  background-color: #E16426;
+  margin: 0 10px; /* Add margin to both sides of the second card */
+}
+
+.card3 {
+  background-color: #E16426;
+  margin-left: 10px; /* Add margin to the left of the third card */
+}
+
+/* Styles for icons */
+.icon,
+.icon2,
+.icon3 {
+  margin-bottom: 10px;
+}
+
+.aduh {
+  margin-top: 30px;
+ margin-bottom: 40px;
+  margin-left: 160px; /* Adjusted left margin */
+  
+}
+
+/*2  */
+/* Add this CSS to your existing styles */
+
+.body2 {
+  background-color: #FEFEFF;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+}
+
+.awal2 {
+  margin-top: 20px;
+  text-align: center;
+}
+.tujuan{
+  text-align: center;
+}
+
+.icon,
+.icon2,
+.icon3,
+.icon4 {
+  margin-right: 20px; /* Add margin to the right of the icon */
+}
+
+.pembungkuscard2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 20px; /* Adjust the gap between cards */
+  width: 80%;
+  margin: 40px auto;
+}
+
+.card11,
+.card21,
+.card31,
+.card41 {
+  display: flex;
+  align-items: center; /* Align content vertically in the center */
+  text-align: left; /* Align text to the left */
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid orange; /* Add border with orange color */
+  box-sizing: border-box; /* Include border in the total width and height */
+}
+
+.card11 h2,
+.card21 h2,
+.card31 h2,
+.card41 h2 {
+  color: #4767c5; /* Set the color of h1 to light blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pembungkuscard2 {
+    grid-template-columns: 1fr; /* One column on small screens */
+    gap: 10px; /* Adjust the gap on small screens */
+  }
+}
+/*  */
+.body3 {
+  background-color: #303092;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.judul {
+  color: white;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.footer1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 10px;
+  width: 100%; /* Ensure content takes up full width */
+  color: white;
+   margin-top: 20px; /* Increase the margin for more spacing */
+  width: 100%; /* Ensure content takes up full width */
+}
+
+.cardfooter {
+  margin: 10px;
+  text-align: center;
+  
+}
+
+.cardfooter1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+  margin-left: 90px;
+}
+
+.bawahct {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.ct1,
+.ct2,
+.ct3,
+.ct4,
+.ct5 {
+  margin-right: 10px;
+}
+
+.akhir{
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #FEFEFF;
+  margin-top: 20px;
+}
+
+.ct1,
+.ct2,
+.ct3,
+.ct4,
+.ct5 img {
+  margin-right: 5px; /* Menambahkan margin ke gambar */
+}
+
+.cardfooter h4 {
+  margin-bottom: 40px;
+  margin-top: 30px; /* Add margin to the bottom of each h4 element */
 }

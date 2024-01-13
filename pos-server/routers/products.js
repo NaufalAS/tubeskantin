@@ -97,33 +97,43 @@ products.route("/:id").get(async (req, res) => {
 // ...
 
 // Endpoint untuk edit gambar dan data produk
+// routers/products.js
+
+// ...
+
+// Endpoint untuk edit gambar dan data produk
 products.route("/:id/edit").put(async (req, res) => {
-	const productId = req.params.id;
-  
-	upload(req, res, async function (err) {
-	  if (err instanceof multer.MulterError) {
-		response.error({ error: 'Error uploading image.' }, req.originalUrl, 500, res);
-	  } else if (err) {
-		response.error({ error: 'Unknown error uploading image.' }, req.originalUrl, 500, res);
-	  } else {
-		// Data produk yang akan diubah
-		const data = {
-		  nama: req.body.nama,
-		  harga: req.body.harga,
-		  kategori: req.body.kategori,
-		  stock: req.body.stock,
-		  image: req.file ? req.file.filename : undefined,  // Periksa apakah req.file ada
-		};
-  
-		try {
-		  const result = await updateProduct(productId, data);
-		  response.success(result, 'Product updated!', res);
-		} catch (error) {
-		  response.error({ error: 'Error updating product in database.' }, req.originalUrl, 500, res);
-		}
-	  }
-	});
+  const productId = req.params.id;
+
+  upload(req, res, async function (err) {
+    if (err instanceof multer.MulterError) {
+      response.error({ error: 'Error uploading image.' }, req.originalUrl, 500, res);
+    } else if (err) {
+      response.error({ error: 'Unknown error uploading image.' }, req.originalUrl, 500, res);
+    } else {
+      // Data produk yang akan diubah
+      try {
+        const existingProduct = await fetchProductById(productId);
+
+        const data = {
+          nama: req.body.nama || existingProduct.nama,
+          harga: req.body.harga || existingProduct.harga,
+          kategori: req.body.kategori || existingProduct.kategori,
+          stock: req.body.stock || existingProduct.stock,
+          image: req.file ? req.file.filename : existingProduct.image,
+        };
+
+        const result = await updateProduct(productId, data);
+        response.success(result, 'Produk berhasil diperbarui!', res);
+      } catch (error) {
+        response.error({ error: 'Error updating product in database.' }, req.originalUrl, 500, res);
+      }
+    }
   });
+});
+
+// ...
+
   
 
 // ...

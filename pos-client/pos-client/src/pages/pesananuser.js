@@ -34,7 +34,7 @@ export default function Transaction() {
 
   return (
     <Layout>
-      <h1>Transaction History</h1>
+      <h1>Pemesanan</h1>
       <PesananUser transactionList={transactionList} />
     </Layout>
   );

@@ -60,19 +60,20 @@ exports.fetchProductById = async (productId) => {
 
 // ...
 exports.updateProduct = async (productId, data) => {
-    try {
-      const query = await db.query("UPDATE products SET ? WHERE id = ?", [data, productId]);
-      if (query.affectedRows > 0) {
-        return { message: 'Product updated successfully.' };
-      } else {
-        throw new Error('No rows were affected by the update.');
-      }
-    } catch (error) {
-      console.error("Error updating product in database:", error);
-      throw new Error('Error updating product in database. ' + error.message);
+  try {
+    const { nama, harga, kategori, stock, image } = data;
+    const query = await db.query("UPDATE products SET nama = ?, harga = ?, kategori = ?, stock = ?, image = ? WHERE id = ?", [nama, harga, kategori, stock, image, productId]);
+
+    if (query.affectedRows > 0) {
+      return { message: 'Product updated successfully.' };
+    } else {
+      throw new Error('No rows were affected by the update.');
     }
-  };
-  
+  } catch (error) {
+    console.error("Error updating product in database:", error);
+    throw new Error('Error updating product in database. ' + error.message);
+  }
+};
 
 // controllers/products.js
 

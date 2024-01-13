@@ -17,13 +17,14 @@ const TransactionList = ({ transactionList }) => {
                   </div>
                 )
               })}
-               <p>status makanan: {transaction.status_makanan}</p> 
+               <p>status maakanan: {transaction.status_makanan}</p> 
                {/* <p>status makanan: {transaction.status_makanan} </p>  */}
             </div>
             <div className={styles['transaction-list__card__pay']}>
               <p>Total Harga: {transaction.total_price}</p>
               <p>Total Bayar: {transaction.paid_amount}</p>
               <p>Kembalian: {transaction.kembalian}</p> 
+              <p>Metode Pembayaran: {transaction.metode_pembayaran || 'Not specified'}</p>
               <p>Pembayaran: {transaction.status_pembayaran}</p> 
             </div>
           </div>

@@ -36,6 +36,7 @@ exports.fetchTransaction = async () => {
                     kembalian: query[index].kembalian,
                     status_makanan: query[index].status_makanan,
                     status_pembayaran: query[index].status_pembayaran,
+                    metode_pembayaran: query[index].metode_pembayaran,
                     user: query[index].user_name,
                     products: listDetail,
                 });
@@ -188,6 +189,7 @@ exports.fetchTransactionsByBuyer = async (buyerId) => {
                   kembalian: result[index].kembalian,
                   status_makanan: result[index].status_makanan,
                   status_pembayaran: result[index].status_pembayaran,
+                  metode_pembayaran: result[index].metode_pembayaran,
                   user: result[index].user_name,
                   products: listDetail,
               });
@@ -237,6 +239,7 @@ exports.fetchTransactionsByBuyer = async (buyerId) => {
         kembalian,
         status_makanan,
         status_pembayaran,
+        metode_pembayaran,
         user_name,
         product_name,
         quantity,
@@ -250,6 +253,7 @@ exports.fetchTransactionsByBuyer = async (buyerId) => {
           kembalian,
           status_makanan,
           status_pembayaran,
+          metode_pembayaran,
           user: user_name,
           products: [],
         });
